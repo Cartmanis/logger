@@ -2,7 +2,9 @@
 Easy and convenient logging method when developing projects in the Golang language
 
 --------------------------
-Install: go get https://github.com/Cartmanis/logger.git
+Install 
+
+go get https://github.com/Cartmanis/logger.git
 
 --------------------------
 Usage
