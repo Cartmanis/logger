@@ -14,7 +14,7 @@ Usage
     Пример: 
 ```go
     func main() {
-    	if err := logger.NewMainLogger("mainLogger.log", false); err!= nil {
+    	if err := logger.NewMainLogger("mainLogger.log", false, true); err!= nil {
     		fmt.Printf("ERROR: при инициализации logger. Текст ошибки: ", err)
     	}
     	defer logger.Close()
@@ -27,7 +27,7 @@ Usage
     Пример:
 ```go
     func test() {
-    	someLogger, err := logger.NewLogger("someLogger.log", false)
+    	someLogger, err := logger.NewLogger("someLogger.log", false, true)
     	if err != nil {
     		fmt.Printf("ERROR: при инициализации logger. Текст ошибки: ", err)
     		return
@@ -41,14 +41,7 @@ Usage
 ------------------------
 Дополнительно
 
-Если вторым параметром передать true, то кроме записи лога в файл будет вывод лога в консоль.
-Также существует возможно вывода только в консоль, без записи в файл
-Для этого необходимо изменить значение OutToFile в false 
-Пример: 
-```go 
-    func main() {
-        logger.NewMainLogger("mainLogger.log", true)
-        logger.OutToFile = false
-    } 
-```
+Первый параметр отвечает за путь до файла. Второй параметр вывод лога в консоль. Третий за вывод лога в файл.
+Если передать false, false, то будет вывод в консоль только ошибочных записей.
+При передачи третьего параметра, отвечающего за вывода в консоль, обязательно необъодимо передавать путь до файла.
 
