@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+.idea/
+.IDEA
+*.XML
+*.xml
+*.log
+main.go
+.gitignore
+composer.lock
