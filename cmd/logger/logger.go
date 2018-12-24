@@ -115,7 +115,7 @@ func (l *Logger) LogError(format string, v ...interface{}) {
 func LogInfo(format string, v ...interface{}) {
 	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
 	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the MainLogger function")
+		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
 		return
 	}
 	if logInfo == nil {
@@ -130,7 +130,7 @@ func LogInfo(format string, v ...interface{}) {
 func LogWarn(format string, v ...interface{}) {
 	logWarn := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
 	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the MainLogger function")
+		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
 		return
 	}
 	if logWarn == nil {
@@ -145,7 +145,7 @@ func LogWarn(format string, v ...interface{}) {
 func LogError(format string, v ...interface{}) {
 	logError := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
 	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the MainLogger function")
+		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
 		return
 	}
 	if logError == nil {
@@ -166,7 +166,7 @@ func (l *Logger) returnLog(outToConsole, outToFile bool, level string) *log.Logg
 		l.log = log.New(io.MultiWriter(os.Stdout), level, flags)
 		return l.log
 	}
-	if l.outToFile && !l.outToConsole {
+	if l.outToFile && !l.outToConsole && l.file != nil {
 		l.log = log.New(io.MultiWriter(l.file), level, flags)
 		return l.log
 	}
