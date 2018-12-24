@@ -4,7 +4,7 @@ Easy and convenient logging method when developing projects in the Golang langua
 --------------------------
 Install 
 
-go get https://github.com/Cartmanis/logger.git
+go get github.com/cartmanis/logger.git
 
 --------------------------
 Usage
