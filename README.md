@@ -17,9 +17,9 @@ Usage
     		fmt.Prinln(err)
     	}
     	defer logger.Close()
-    	logger.LogInfo("Лог уровня Info")
-    	logger.LogWarn("Лог уровня Warn")
-    	logger.LogError("Лог уровня Error")
+    	logger.Info("Лог уровня Info")
+    	logger.Warn("Лог уровня Warn")
+    	logger.Error("Лог уровня Error")
     }
 ```
  *  Инициализация вспомогательного логера для решения определенной задачи.
@@ -31,16 +31,16 @@ Usage
     		return
     	}
     	defer someLogger.Close()
-    	someLogger.LogInfo("Дополнительный лог уровня Info")
-    	someLogger.LogWarn("Дополнительный лог уровня Warn")
-    	someLogger.LogError("Дополнительный лог уровня Error")
+    	someLogger.Info("Дополнительный лог уровня Info")
+    	someLogger.Warn("Дополнительный лог уровня Warn")
+    	someLogger.Error("Дополнительный лог уровня Error")
     }
 ```
 ------------------------
 Дополнительно
 
 Первый параметр отвечает за путь до файла. Второй параметр вывод лога в консоль. Третий за вывод лога в файл.
-Если передать false, false, то будет вывод в консоль только лога уровня Error - LogError()
+Если передать false, false, то будет вывод в консоль только лог уровня Error - Error()
 При передачи третьего параметра, отвечающего за вывода в файл, обязательно необходимо передать путь до файла.
 
 

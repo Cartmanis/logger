@@ -71,7 +71,7 @@ func Close() error {
 	return errors.New("The main logger is not initialized. Please call MainLogger()")
 }
 
-func (l *Logger) LogInfo(format string, v ...interface{}) {
+func (l *Logger) Info(format string, v ...interface{}) {
 	if l == nil {
 		return
 	}
@@ -84,7 +84,7 @@ func (l *Logger) LogInfo(format string, v ...interface{}) {
 		fmt.Printf("ERROR: при записи LogInfo")
 	}
 }
-func (l *Logger) LogWarn(format string, v ...interface{}) {
+func (l *Logger) Warn(format string, v ...interface{}) {
 	if l == nil {
 		return
 	}
@@ -98,7 +98,7 @@ func (l *Logger) LogWarn(format string, v ...interface{}) {
 	}
 }
 
-func (l *Logger) LogError(format string, v ...interface{}) {
+func (l *Logger) Error(format string, v ...interface{}) {
 	if l == nil {
 		return
 	}
@@ -112,7 +112,7 @@ func (l *Logger) LogError(format string, v ...interface{}) {
 	}
 }
 
-func LogInfo(format string, v ...interface{}) {
+func Info(format string, v ...interface{}) {
 	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
@@ -127,7 +127,7 @@ func LogInfo(format string, v ...interface{}) {
 	}
 }
 
-func LogWarn(format string, v ...interface{}) {
+func Warn(format string, v ...interface{}) {
 	logWarn := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
@@ -142,7 +142,7 @@ func LogWarn(format string, v ...interface{}) {
 	}
 }
 
-func LogError(format string, v ...interface{}) {
+func Error(format string, v ...interface{}) {
 	logError := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
@@ -174,7 +174,7 @@ func (l *Logger) returnLog(outToConsole, outToFile bool, level string) *log.Logg
 }
 
 func (l *Logger) returnLogError(outToConsole, outToFile bool) *log.Logger {
-	if l.outToFile {
+	if l.outToFile && l.file != nil {
 		l.log = log.New(io.MultiWriter(l.file, os.Stderr), errLog, flags)
 	}
 	if !l.outToFile {
