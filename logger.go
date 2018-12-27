@@ -113,6 +113,18 @@ func (l *Logger) Error(format string, v ...interface{}) {
 }
 
 func Info(format string, v ...interface{}) {
+	InfoDepth(2, format, v...)
+}
+
+func Warn(format string, v ...interface{}) {
+	WarnDepth(2, format, v...)
+}
+
+func Error(format string, v ...interface{}) {
+	ErrorDepth(2, format, v...)
+}
+
+func InfoDepth(depth int, format string, v ...interface{}) {
 	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
@@ -121,13 +133,13 @@ func Info(format string, v ...interface{}) {
 	if logInfo == nil {
 		return
 	}
-	err := logInfo.Output(2, fmt.Sprintf(format, v...))
+	err := logInfo.Output(depth, fmt.Sprintf(format, v...))
 	if err != nil {
 		fmt.Printf("ERROR: при записи LogInfo основного лога %v", err)
 	}
 }
 
-func Warn(format string, v ...interface{}) {
+func WarnDepth(depth int, format string, v ...interface{}) {
 	logWarn := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
@@ -136,13 +148,13 @@ func Warn(format string, v ...interface{}) {
 	if logWarn == nil {
 		return
 	}
-	err := logWarn.Output(2, fmt.Sprintf(format, v...))
+	err := logWarn.Output(depth, fmt.Sprintf(format, v...))
 	if err != nil {
 		fmt.Printf("ERROR: при записи LogWarn основого лога", err)
 	}
 }
 
-func Error(format string, v ...interface{}) {
+func ErrorDepth(depth int, format string, v ...interface{}) {
 	logError := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
@@ -151,7 +163,7 @@ func Error(format string, v ...interface{}) {
 	if logError == nil {
 		return
 	}
-	err := logError.Output(2, fmt.Sprintf(format, v...))
+	err := logError.Output(depth, fmt.Sprintf(format, v...))
 	if err != nil {
 		fmt.Printf("ERROR: при записи LogWarn основого лога")
 	}
