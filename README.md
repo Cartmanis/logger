@@ -27,8 +27,7 @@ Usage
     func test() {
     	someLogger, err := logger.NewLogger("someLogger.log", false, true)
     	if err != nil {
-    		fmt.Printf(err)
-    		return
+    		fmt.Println(err)    		
     	}
     	defer someLogger.Close()
     	someLogger.Info("Additional level log Info")
