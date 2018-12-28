@@ -1,16 +1,14 @@
 package logger
 
 import (
+	"errors"
 	"fmt"
-	"github.com/pkg/errors"
 	"io"
 	"log"
 	"os"
 )
 
 const flags = log.LstdFlags | log.Lshortfile
-
-var logMain *Logger
 
 const (
 	info   = "INFO : "
@@ -39,24 +37,6 @@ func NewLogger(path string, outToConsole bool, outToFile bool) (*Logger, error) 
 	return &l, nil
 }
 
-func NewMainLogger(path string, outToConsole bool, outToFile bool) error {
-	logMain = &Logger{}
-	if outToFile && path == "" {
-		return errors.New("To record the logger in the file, you must specify the path to the file")
-	}
-	if outToFile {
-		logFile, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
-		logMain.file = logFile
-		if err != nil {
-			return err
-		}
-	}
-	logMain.outToConsole = outToConsole
-	logMain.outToFile = outToFile
-
-	return nil
-}
-
 func (l *Logger) Close() error {
 	if l != nil && l.file != nil {
 		return l.file.Close()
@@ -64,14 +44,67 @@ func (l *Logger) Close() error {
 	return errors.New("The logger is not initialized. Please call NewLogger()")
 }
 
-func Close() error {
-	if logMain != nil && logMain.file != nil {
-		return logMain.file.Close()
+func (l *Logger) InfoDepth(depth int, i ...interface{}) {
+	if l == nil {
+		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		return
 	}
-	return errors.New("The main logger is not initialized. Please call MainLogger()")
+	logInfo := l.returnLog(l.outToConsole, l.outToFile, info)
+	if logInfo == nil {
+		return
+	}
+
+	err := logInfo.Output(depth, fmt.Sprintln(i...))
+	if err != nil {
+		fmt.Println("ERROR: while writing in InfoDepth. Error:", err)
+	}
 }
 
-func (l *Logger) Info(format string, v ...interface{}) {
+func (l *Logger) Info(i ...interface{}) {
+	l.InfoDepth(2, i...)
+}
+
+func (l *Logger) WarnDepth(depth int, i ...interface{}) {
+	if l == nil {
+		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		return
+	}
+	warnInfo := l.returnLog(l.outToConsole, l.outToFile, warn)
+	if warnInfo == nil {
+		return
+	}
+
+	err := warnInfo.Output(depth, fmt.Sprintln(i...))
+	if err != nil {
+		fmt.Println("ERROR: while writing in WarnDepth. Error:", err)
+	}
+}
+
+func (l *Logger) Warn(i ...interface{}) {
+	l.WarnDepth(2, i...)
+}
+
+func (l *Logger) ErrorDepth(depth int, i ...interface{}) {
+	if l == nil {
+		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		return
+	}
+	logErr := l.returnLog(l.outToConsole, l.outToFile, errLog)
+	if logErr == nil {
+		return
+	}
+
+	err := logErr.Output(depth, fmt.Sprintln(i...))
+	if err != nil {
+		fmt.Println("ERROR: while writing in ErrorDepth. Error:", err)
+	}
+}
+
+func (l *Logger) Error(i ...interface{}) {
+	l.ErrorDepth(2, i...)
+}
+
+func (l *Logger) InfoDepthf(depth int, format string, i ...interface{}) {
 	if l == nil {
 		return
 	}
@@ -79,12 +112,17 @@ func (l *Logger) Info(format string, v ...interface{}) {
 	if logInfo == nil {
 		return
 	}
-	err := logInfo.Output(2, fmt.Sprintf(format, v...))
+	err := logInfo.Output(depth, fmt.Sprintf(format, i...))
 	if err != nil {
-		fmt.Printf("ERROR: при записи LogInfo")
+		fmt.Println("ERROR: while writing in InfoDepthf. Error:", err)
 	}
 }
-func (l *Logger) Warn(format string, v ...interface{}) {
+
+func (l *Logger) Infof(format string, i ...interface{}) {
+	l.InfoDepthf(2, format, i...)
+}
+
+func (l *Logger) WarnDepthf(depth int, format string, i ...interface{}) {
 	if l == nil {
 		return
 	}
@@ -92,13 +130,17 @@ func (l *Logger) Warn(format string, v ...interface{}) {
 	if logWarn == nil {
 		return
 	}
-	err := logWarn.Output(2, fmt.Sprintf(format, v...))
+	err := logWarn.Output(depth, fmt.Sprintf(format, i...))
 	if err != nil {
-		fmt.Printf("ERROR: при записи LogInfo")
+		fmt.Println("ERROR: while writing in WarnDepthf. Error:", err)
 	}
 }
 
-func (l *Logger) Error(format string, v ...interface{}) {
+func (l *Logger) Warnf(format string, i ...interface{}) {
+	l.WarnDepthf(2, format, i...)
+}
+
+func (l *Logger) ErrorDepthf(depth int, format string, i ...interface{}) {
 	if l == nil {
 		return
 	}
@@ -106,68 +148,14 @@ func (l *Logger) Error(format string, v ...interface{}) {
 	if logError == nil {
 		return
 	}
-	err := logError.Output(2, fmt.Sprintf(format, v...))
+	err := logError.Output(depth, fmt.Sprintf(format, i...))
 	if err != nil {
-		fmt.Printf("ERROR: при записи LogInfo")
+		fmt.Println("ERROR: while writing in ErrorDepthf. Error:", err)
 	}
 }
 
-func Infof(format string, v ...interface{}) {
-
-	InfoDepthf(2, format, v...)
-}
-
-func Warnf(format string, v ...interface{}) {
-	WarnDepthf(2, format, v...)
-}
-
-func Errorf(format string, v ...interface{}) {
-	ErrorDepthf(2, format, v...)
-}
-
-func InfoDepthf(depth int, format string, v ...interface{}) {
-	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
-	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
-		return
-	}
-	if logInfo == nil {
-		return
-	}
-	err := logInfo.Output(depth, fmt.Sprintf(format, v...))
-	if err != nil {
-		fmt.Printf("ERROR: при записи LogInfo основного лога %v", err)
-	}
-}
-
-func WarnDepthf(depth int, format string, v ...interface{}) {
-	logWarn := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
-	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
-		return
-	}
-	if logWarn == nil {
-		return
-	}
-	err := logWarn.Output(depth, fmt.Sprintf(format, v...))
-	if err != nil {
-		fmt.Printf("ERROR: при записи LogWarn основого лога", err)
-	}
-}
-
-func ErrorDepthf(depth int, format string, v ...interface{}) {
-	logError := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
-	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
-		return
-	}
-	if logError == nil {
-		return
-	}
-	err := logError.Output(depth, fmt.Sprintf(format, v...))
-	if err != nil {
-		fmt.Printf("ERROR: при записи LogWarn основого лога")
-	}
+func (l *Logger) Errorf(format string, i ...interface{}) {
+	l.ErrorDepthf(2, format, i...)
 }
 
 func (l *Logger) returnLog(outToConsole, outToFile bool, level string) *log.Logger {
