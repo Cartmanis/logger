@@ -22,7 +22,7 @@ Usage
     	logger.Error("Error level log")
     }
 ```
- * Initializing auxiliary logger to solve a specific task.
+ * Initializing auxiliary logger to solve a specific task
 ```go
     func test() {
     	someLogger, err := logger.NewLogger("someLogger.log", false, true)
@@ -36,6 +36,12 @@ Usage
     	someLogger.Error("Additional level log Error")
     }
 ```
+It is possible to disable the log of the INFO level and the log of the WARN level
+```go
+    logger.DisableInfo()
+    logger.DisableWarn()
+```
+
 ------------------------
 Additionally
 
@@ -43,5 +49,6 @@ The first parameter is responsible for the path to the file. The second paramete
 The third parameter is a switch to output the log to a file.
 If the second and third parameters are false, false, then there will be output only to the Error level log console
 When passing the third parameter, it is imperative that you pass the path to the file.
+
 
 
