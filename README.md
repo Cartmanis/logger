@@ -9,20 +9,20 @@ go get github.com/cartmanis/logger.git
 --------------------------
 Usage
 
- Для использования необходимо инициализировать логер. Существует два способа инициализации:    
- * Инициализация основного логера, для использования его в разных частях проекта     
+ To use, you must initialize the logger. There are two ways to initialize:    
+ * Initialization of the main logger for use in different parts of the project     
 ```go
     func main() {
     	if err := logger.NewMainLogger("mainLogger.log", false, true); err != nil {
     		fmt.Prinln(err)
     	}
     	defer logger.Close()
-    	logger.Info("Лог уровня Info")
-    	logger.Warn("Лог уровня Warn")
-    	logger.Error("Лог уровня Error")
+    	logger.Info("Info level log")
+    	logger.Warn("Warn level log")
+    	logger.Error("Error level log")
     }
 ```
- *  Инициализация вспомогательного логера для решения определенной задачи.
+ * Initializing auxiliary logger to solve a specific task.
 ```go
     func test() {
     	someLogger, err := logger.NewLogger("someLogger.log", false, true)
@@ -31,16 +31,17 @@ Usage
     		return
     	}
     	defer someLogger.Close()
-    	someLogger.Info("Дополнительный лог уровня Info")
-    	someLogger.Warn("Дополнительный лог уровня Warn")
-    	someLogger.Error("Дополнительный лог уровня Error")
+    	someLogger.Info("Additional level log Info")
+    	someLogger.Warn("Additional level log Warn")
+    	someLogger.Error("Additional level log Error")
     }
 ```
 ------------------------
-Дополнительно
+Additionally
 
-Первый параметр отвечает за путь до файла. Второй параметр вывод лога в консоль. Третий за вывод лога в файл.
-Если передать false, false, то будет вывод в консоль только лог уровня Error - Error()
-При передачи третьего параметра, отвечающего за вывода в файл, обязательно необходимо передать путь до файла.
+The first parameter is responsible for the path to the file. The second parameter is the switch output log to the console.
+The third parameter is a switch to output the log to a file.
+If the second and third parameters are false, false, then there will be output only to the Error level log console
+When passing the third parameter, it is imperative that you pass the path to the file.
 
 
