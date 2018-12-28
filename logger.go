@@ -112,19 +112,20 @@ func (l *Logger) Error(format string, v ...interface{}) {
 	}
 }
 
-func Info(format string, v ...interface{}) {
-	InfoDepth(2, format, v...)
+func Infof(format string, v ...interface{}) {
+
+	InfoDepthf(2, format, v...)
 }
 
-func Warn(format string, v ...interface{}) {
-	WarnDepth(2, format, v...)
+func Warnf(format string, v ...interface{}) {
+	WarnDepthf(2, format, v...)
 }
 
-func Error(format string, v ...interface{}) {
-	ErrorDepth(2, format, v...)
+func Errorf(format string, v ...interface{}) {
+	ErrorDepthf(2, format, v...)
 }
 
-func InfoDepth(depth int, format string, v ...interface{}) {
+func InfoDepthf(depth int, format string, v ...interface{}) {
 	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
@@ -139,7 +140,7 @@ func InfoDepth(depth int, format string, v ...interface{}) {
 	}
 }
 
-func WarnDepth(depth int, format string, v ...interface{}) {
+func WarnDepthf(depth int, format string, v ...interface{}) {
 	logWarn := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
@@ -154,7 +155,7 @@ func WarnDepth(depth int, format string, v ...interface{}) {
 	}
 }
 
-func ErrorDepth(depth int, format string, v ...interface{}) {
+func ErrorDepthf(depth int, format string, v ...interface{}) {
 	logError := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
