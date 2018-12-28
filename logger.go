@@ -61,7 +61,7 @@ func (l *Logger) InfoDepth(depth int, i ...interface{}) {
 }
 
 func (l *Logger) Info(i ...interface{}) {
-	l.InfoDepth(2, i...)
+	l.InfoDepth(3, i...)
 }
 
 func (l *Logger) WarnDepth(depth int, i ...interface{}) {
@@ -81,7 +81,7 @@ func (l *Logger) WarnDepth(depth int, i ...interface{}) {
 }
 
 func (l *Logger) Warn(i ...interface{}) {
-	l.WarnDepth(2, i...)
+	l.WarnDepth(3, i...)
 }
 
 func (l *Logger) ErrorDepth(depth int, i ...interface{}) {
@@ -89,7 +89,7 @@ func (l *Logger) ErrorDepth(depth int, i ...interface{}) {
 		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
 		return
 	}
-	logErr := l.returnLog(l.outToConsole, l.outToFile, errLog)
+	logErr := l.returnLogError(l.outToConsole, l.outToFile)
 	if logErr == nil {
 		return
 	}
@@ -101,7 +101,7 @@ func (l *Logger) ErrorDepth(depth int, i ...interface{}) {
 }
 
 func (l *Logger) Error(i ...interface{}) {
-	l.ErrorDepth(2, i...)
+	l.ErrorDepth(3, i...)
 }
 
 func (l *Logger) InfoDepthf(depth int, format string, i ...interface{}) {
@@ -119,7 +119,7 @@ func (l *Logger) InfoDepthf(depth int, format string, i ...interface{}) {
 }
 
 func (l *Logger) Infof(format string, i ...interface{}) {
-	l.InfoDepthf(2, format, i...)
+	l.InfoDepthf(3, format, i...)
 }
 
 func (l *Logger) WarnDepthf(depth int, format string, i ...interface{}) {
@@ -137,7 +137,7 @@ func (l *Logger) WarnDepthf(depth int, format string, i ...interface{}) {
 }
 
 func (l *Logger) Warnf(format string, i ...interface{}) {
-	l.WarnDepthf(2, format, i...)
+	l.WarnDepthf(3, format, i...)
 }
 
 func (l *Logger) ErrorDepthf(depth int, format string, i ...interface{}) {
@@ -155,7 +155,7 @@ func (l *Logger) ErrorDepthf(depth int, format string, i ...interface{}) {
 }
 
 func (l *Logger) Errorf(format string, i ...interface{}) {
-	l.ErrorDepthf(2, format, i...)
+	l.ErrorDepthf(3, format, i...)
 }
 
 func (l *Logger) returnLog(outToConsole, outToFile bool, level string) *log.Logger {

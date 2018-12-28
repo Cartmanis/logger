@@ -50,7 +50,7 @@ func InfoDepth(depth int, i ...interface{}) {
 }
 
 func Info(i ...interface{}) {
-	InfoDepth(2, i...)
+	InfoDepth(3, i...)
 }
 
 func WarnDepth(depth int, i ...interface{}) {
@@ -70,7 +70,7 @@ func WarnDepth(depth int, i ...interface{}) {
 }
 
 func Warn(i ...interface{}) {
-	WarnDepth(2, i...)
+	WarnDepth(3, i...)
 }
 
 func ErrorDepth(depth int, i ...interface{}) {
@@ -78,7 +78,7 @@ func ErrorDepth(depth int, i ...interface{}) {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
 		return
 	}
-	logErr := logMain.returnLog(logMain.outToConsole, logMain.outToFile, errLog)
+	logErr := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
 	if logErr == nil {
 		return
 	}
@@ -90,7 +90,7 @@ func ErrorDepth(depth int, i ...interface{}) {
 }
 
 func Error(i ...interface{}) {
-	ErrorDepth(2, i...)
+	ErrorDepth(3, i...)
 }
 
 func InfoDepthf(depth int, format string, i ...interface{}) {
@@ -109,7 +109,7 @@ func InfoDepthf(depth int, format string, i ...interface{}) {
 }
 
 func Infof(format string, i ...interface{}) {
-	InfoDepthf(2, format, i...)
+	InfoDepthf(3, format, i...)
 }
 
 func WarnDepthf(depth int, format string, i ...interface{}) {
@@ -128,7 +128,7 @@ func WarnDepthf(depth int, format string, i ...interface{}) {
 }
 
 func Warnf(format string, i ...interface{}) {
-	WarnDepthf(2, format, i...)
+	WarnDepthf(3, format, i...)
 }
 
 func ErrorDepthf(depth int, format string, i ...interface{}) {
@@ -147,5 +147,5 @@ func ErrorDepthf(depth int, format string, i ...interface{}) {
 }
 
 func Errorf(format string, i ...interface{}) {
-	ErrorDepthf(2, format, i...)
+	ErrorDepthf(3, format, i...)
 }
