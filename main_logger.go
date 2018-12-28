@@ -33,9 +33,31 @@ func Close() error {
 	return errors.New("The main logger is not initialized. Please call NewMainLogger()")
 }
 
+func DisableWarn() {
+	if logMain == nil {
+		fmt.Println("ERROR : The stream main logger has not been initialized. Please call the NewMainLogger function")
+		return
+	}
+	logMain.disableWarn = true
+}
+
+func DisableInfo() {
+	if logMain == nil {
+		fmt.Println("ERROR : The stream main logger has not been initialized. Please call the NewMainLogger function")
+		return
+	}
+	logMain.disableInfo = true
+}
+
 func InfoDepth(depth int, i ...interface{}) {
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
+		return
+	}
+	if logMain.disableInfo {
+		return
+	}
+	if logMain.disableInfo {
 		return
 	}
 	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
@@ -56,6 +78,9 @@ func Info(i ...interface{}) {
 func WarnDepth(depth int, i ...interface{}) {
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
+		return
+	}
+	if logMain.disableWarn {
 		return
 	}
 	warnInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
@@ -94,11 +119,14 @@ func Error(i ...interface{}) {
 }
 
 func InfoDepthf(depth int, format string, i ...interface{}) {
-	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
 		return
 	}
+	if logMain.disableInfo {
+		return
+	}
+	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
 	if logInfo == nil {
 		return
 	}
@@ -113,11 +141,14 @@ func Infof(format string, i ...interface{}) {
 }
 
 func WarnDepthf(depth int, format string, i ...interface{}) {
-	logWarn := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
 	if logMain == nil {
 		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
 		return
 	}
+	if logMain.disableWarn {
+		return
+	}
+	logWarn := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
 	if logWarn == nil {
 		return
 	}
