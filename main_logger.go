@@ -46,22 +46,11 @@ func InfoDepth(depth int, i ...interface{}) {
 		fmt.Println(noMainInit)
 		return
 	}
-	if logMain.disableInfo {
-		return
-	}
-	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
-	if logInfo == nil {
-		return
-	}
-
-	err := logInfo.Output(depth, fmt.Sprintln(i...))
-	if err != nil {
-		fmt.Println("ERROR: while writing main logger in InfoDepth. Error:", err)
-	}
+	logMain.InfoDepth(depth, i...)
 }
 
 func Info(i ...interface{}) {
-	InfoDepth(3, i...)
+	InfoDepth(4, i...)
 }
 
 func WarnDepth(depth int, i ...interface{}) {
@@ -69,22 +58,11 @@ func WarnDepth(depth int, i ...interface{}) {
 		fmt.Println(noMainInit)
 		return
 	}
-	if logMain.disableWarn {
-		return
-	}
-	warnInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
-	if warnInfo == nil {
-		return
-	}
-
-	err := warnInfo.Output(depth, fmt.Sprintln(i...))
-	if err != nil {
-		fmt.Println("ERROR: while writing main logger in WarnDepth. Error:", err)
-	}
+	logMain.WarnDepth(depth, i...)
 }
 
 func Warn(i ...interface{}) {
-	WarnDepth(3, i...)
+	WarnDepth(4, i...)
 }
 
 func ErrorDepth(depth int, i ...interface{}) {
@@ -92,19 +70,11 @@ func ErrorDepth(depth int, i ...interface{}) {
 		fmt.Println(noMainInit)
 		return
 	}
-	logErr := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
-	if logErr == nil {
-		return
-	}
-
-	err := logErr.Output(depth, fmt.Sprintln(i...))
-	if err != nil {
-		fmt.Println("ERROR: while writing main logger in ErrorDepth. Error:", err)
-	}
+	logMain.ErrorDepth(depth, i...)
 }
 
 func Error(i ...interface{}) {
-	ErrorDepth(3, i...)
+	ErrorDepth(4, i...)
 }
 
 func InfoDepthf(depth int, format string, i ...interface{}) {
@@ -112,21 +82,11 @@ func InfoDepthf(depth int, format string, i ...interface{}) {
 		fmt.Println(noMainInit)
 		return
 	}
-	if logMain.disableInfo {
-		return
-	}
-	logInfo := logMain.returnLog(logMain.outToConsole, logMain.outToFile, info)
-	if logInfo == nil {
-		return
-	}
-	err := logInfo.Output(depth, fmt.Sprintf(format, i...))
-	if err != nil {
-		fmt.Println("ERROR: while writing main logger in InfoDepthf", err)
-	}
+	logMain.InfoDepthf(depth, format, i...)
 }
 
 func Infof(format string, i ...interface{}) {
-	InfoDepthf(3, format, i...)
+	InfoDepthf(4, format, i...)
 }
 
 func WarnDepthf(depth int, format string, i ...interface{}) {
@@ -134,38 +94,21 @@ func WarnDepthf(depth int, format string, i ...interface{}) {
 		fmt.Println(noMainInit)
 		return
 	}
-	if logMain.disableWarn {
-		return
-	}
-	logWarn := logMain.returnLog(logMain.outToConsole, logMain.outToFile, warn)
-	if logWarn == nil {
-		return
-	}
-	err := logWarn.Output(depth, fmt.Sprintf(format, i...))
-	if err != nil {
-		fmt.Println("ERROR: while writing main logger in WarnDepthf", err)
-	}
+	logMain.WarnDepthf(depth, format, i...)
 }
 
 func Warnf(format string, i ...interface{}) {
-	WarnDepthf(3, format, i...)
+	WarnDepthf(4, format, i...)
 }
 
 func ErrorDepthf(depth int, format string, i ...interface{}) {
-	logError := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
 	if logMain == nil {
 		fmt.Println(noMainInit)
 		return
 	}
-	if logError == nil {
-		return
-	}
-	err := logError.Output(depth, fmt.Sprintf(format, i...))
-	if err != nil {
-		fmt.Println("ERROR: while writing main logger in ErrorDepthf", err)
-	}
+	logMain.ErrorDepthf(depth, format, i...)
 }
 
 func Errorf(format string, i ...interface{}) {
-	ErrorDepthf(3, format, i...)
+	ErrorDepthf(4, format, i...)
 }
