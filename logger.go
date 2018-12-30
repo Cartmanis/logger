@@ -16,6 +16,8 @@ const (
 	errLog = "ERROR : "
 )
 
+const noInit = "The stream logger has not been initialized. Please call the NewLogger() method"
+
 type Logger struct {
 	outToFile    bool
 	disableWarn  bool
@@ -26,6 +28,9 @@ type Logger struct {
 }
 
 func NewLogger(path string, outToConsole bool, outToFile bool) (*Logger, error) {
+	if outToFile && path == "" {
+		return nil, errors.New("To record the logger in the file, You must specify the path to the file")
+	}
 	l := Logger{}
 	if outToFile {
 		logFile, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
@@ -43,12 +48,12 @@ func (l *Logger) Close() error {
 	if l != nil && l.file != nil {
 		return l.file.Close()
 	}
-	return errors.New("The logger is not initialized. Please call NewLogger()")
+	return errors.New(noInit)
 }
 
 func (l *Logger) DisableWarn() {
 	if l == nil {
-		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		fmt.Println(noInit)
 		return
 	}
 	l.disableWarn = true
@@ -56,7 +61,7 @@ func (l *Logger) DisableWarn() {
 
 func (l *Logger) DisableInfo() {
 	if l == nil {
-		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		fmt.Println(noInit)
 		return
 	}
 	l.disableInfo = true
@@ -64,7 +69,7 @@ func (l *Logger) DisableInfo() {
 
 func (l *Logger) InfoDepth(depth int, i ...interface{}) {
 	if l == nil {
-		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		fmt.Println(noInit)
 		return
 	}
 	if l.disableInfo {
@@ -87,7 +92,7 @@ func (l *Logger) Info(i ...interface{}) {
 
 func (l *Logger) WarnDepth(depth int, i ...interface{}) {
 	if l == nil {
-		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		fmt.Println(noInit)
 		return
 	}
 	if l.disableWarn {
@@ -110,7 +115,7 @@ func (l *Logger) Warn(i ...interface{}) {
 
 func (l *Logger) ErrorDepth(depth int, i ...interface{}) {
 	if l == nil {
-		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		fmt.Println(noInit)
 		return
 	}
 	logErr := l.returnLogError(l.outToConsole, l.outToFile)
@@ -130,7 +135,7 @@ func (l *Logger) Error(i ...interface{}) {
 
 func (l *Logger) InfoDepthf(depth int, format string, i ...interface{}) {
 	if l == nil {
-		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		fmt.Println(noInit)
 		return
 	}
 	if l.disableInfo {
@@ -152,7 +157,7 @@ func (l *Logger) Infof(format string, i ...interface{}) {
 
 func (l *Logger) WarnDepthf(depth int, format string, i ...interface{}) {
 	if l == nil {
-		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		fmt.Println(noInit)
 		return
 	}
 	if l.disableWarn {
@@ -174,7 +179,7 @@ func (l *Logger) Warnf(format string, i ...interface{}) {
 
 func (l *Logger) ErrorDepthf(depth int, format string, i ...interface{}) {
 	if l == nil {
-		fmt.Println("ERROR : The stream logger has not been initialized. Please call the NewLogger function")
+		fmt.Println(noInit)
 		return
 	}
 	logError := l.returnLogError(l.outToConsole, l.outToFile)

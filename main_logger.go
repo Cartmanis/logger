@@ -3,26 +3,18 @@ package logger
 import (
 	"errors"
 	"fmt"
-	"os"
 )
 
 var logMain *Logger
 
-func NewMainLogger(path string, outToConsole bool, outToFile bool) error {
-	logMain = &Logger{}
-	if outToFile && path == "" {
-		return errors.New("To record the logger in the file, You must specify the path to the file")
-	}
-	if outToFile {
-		logFile, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
-		logMain.file = logFile
-		if err != nil {
-			return err
-		}
-	}
-	logMain.outToConsole = outToConsole
-	logMain.outToFile = outToFile
+const noMainInit = "The stream main logger has not been initialized. Please call NewMainLogger() function"
 
+func NewMainLogger(path string, outToConsole bool, outToFile bool) error {
+	l, err := NewLogger(path, outToConsole, outToFile)
+	if err != nil {
+		return err
+	}
+	logMain = l
 	return nil
 }
 
@@ -30,12 +22,12 @@ func Close() error {
 	if logMain != nil && logMain.file != nil {
 		return logMain.file.Close()
 	}
-	return errors.New("The main logger is not initialized. Please call NewMainLogger()")
+	return errors.New(noMainInit)
 }
 
 func DisableWarn() {
 	if logMain == nil {
-		fmt.Println("ERROR : The stream main logger has not been initialized. Please call the NewMainLogger function")
+		fmt.Println(noMainInit)
 		return
 	}
 	logMain.disableWarn = true
@@ -43,7 +35,7 @@ func DisableWarn() {
 
 func DisableInfo() {
 	if logMain == nil {
-		fmt.Println("ERROR : The stream main logger has not been initialized. Please call the NewMainLogger function")
+		fmt.Println(noMainInit)
 		return
 	}
 	logMain.disableInfo = true
@@ -51,10 +43,7 @@ func DisableInfo() {
 
 func InfoDepth(depth int, i ...interface{}) {
 	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
-		return
-	}
-	if logMain.disableInfo {
+		fmt.Println(noMainInit)
 		return
 	}
 	if logMain.disableInfo {
@@ -77,7 +66,7 @@ func Info(i ...interface{}) {
 
 func WarnDepth(depth int, i ...interface{}) {
 	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
+		fmt.Println(noMainInit)
 		return
 	}
 	if logMain.disableWarn {
@@ -100,7 +89,7 @@ func Warn(i ...interface{}) {
 
 func ErrorDepth(depth int, i ...interface{}) {
 	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
+		fmt.Println(noMainInit)
 		return
 	}
 	logErr := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
@@ -120,7 +109,7 @@ func Error(i ...interface{}) {
 
 func InfoDepthf(depth int, format string, i ...interface{}) {
 	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
+		fmt.Println(noMainInit)
 		return
 	}
 	if logMain.disableInfo {
@@ -142,7 +131,7 @@ func Infof(format string, i ...interface{}) {
 
 func WarnDepthf(depth int, format string, i ...interface{}) {
 	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
+		fmt.Println(noMainInit)
 		return
 	}
 	if logMain.disableWarn {
@@ -165,7 +154,7 @@ func Warnf(format string, i ...interface{}) {
 func ErrorDepthf(depth int, format string, i ...interface{}) {
 	logError := logMain.returnLogError(logMain.outToConsole, logMain.outToFile)
 	if logMain == nil {
-		fmt.Println("ERROR : The main stream logger has not been initialized. Please call the NewMainLogger function")
+		fmt.Println(noMainInit)
 		return
 	}
 	if logError == nil {
