@@ -80,7 +80,7 @@ func (l *Logger) InfoDepth(depth int, i ...interface{}) {
 		return
 	}
 
-	err := logInfo.Output(depth, fmt.Sprintln(i...))
+	err := logInfo.Output(depth, fmt.Sprint(i...)+"\r\n")
 	if err != nil {
 		fmt.Println("ERROR: while writing in InfoDepth. Error:", err)
 	}
@@ -103,7 +103,7 @@ func (l *Logger) WarnDepth(depth int, i ...interface{}) {
 		return
 	}
 
-	err := warnInfo.Output(depth, fmt.Sprintln(i...))
+	err := warnInfo.Output(depth, fmt.Sprint(i...)+"\r\n")
 	if err != nil {
 		fmt.Println("ERROR: while writing in WarnDepth. Error:", err)
 	}
@@ -123,7 +123,7 @@ func (l *Logger) ErrorDepth(depth int, i ...interface{}) {
 		return
 	}
 
-	err := logErr.Output(depth, fmt.Sprintln(i...))
+	err := logErr.Output(depth, fmt.Sprint(i...)+"\r\n")
 	if err != nil {
 		fmt.Println("ERROR: while writing in ErrorDepth. Error:", err)
 	}
